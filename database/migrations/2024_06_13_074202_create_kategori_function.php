@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB:unprepared('
+        DB::unprepared('
         CREATE FUNCTION getKategori(kat VARCHAR(4))
         RETURNS varchar(30)
         BEGIN
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB:unprepared('DROP FUNCTION IF EXISTS getKategori');
+        DB::unprepared('DROP FUNCTION IF EXISTS getKategori');
     }
 };
