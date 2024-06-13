@@ -8,6 +8,7 @@ use App\Models\Kategori;
 use App\Models\BarangMasuk;
 use App\Models\BarangKeluar;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class BarangKeluarController extends Controller
 {
@@ -52,12 +53,23 @@ class BarangKeluarController extends Controller
             'barang_id' => 'required',
         ]);
     
-        $barang = Barang::find($request->barang_id);
-        $errors = [];
+        $barang = DB::table('barang')
+                ->where('id', $request->barang_id)
+                ->first();
+        if ($barang->stok < $request->qty_keluar) {
+            return redirect()->route('barangkeluar.create')
+                ->withErrors(['qty_keluar' => 'Stok yang dimasukkan melebihi jumlah barang yang tersedia'])
+                ->withInput();
+        }
+
+        // if (!$barang) {
+        //     return redirect()->route('barangkeluar.create')->withErrors(['errbarang' => 'Barang tidak ditemukan'])->withInput();
+        // }
     
         if ($barang->stok < $request->qty_keluar) {
             $errors['errstok'] = 'Stok tidak cukup untuk keluaran barang ini.';
         }
+        
     
         $tanggal_masuk_terbaru = BarangMasuk::where('barang_id', $request->barang_id)
                                             ->latest('tgl_masuk')
