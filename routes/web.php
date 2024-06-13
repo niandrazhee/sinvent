@@ -7,7 +7,6 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangKeluarController;
-use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,12 +22,10 @@ Route::get('/', function () {
     return view('login');
 });
 
-Route::get('dashboard', [DashboardController::class,'index']);
 
 Route::resource('barang', BarangController::class)->middleware('auth');
 
 Route::resource('kategori', KategoriController::class)->middleware('auth');
-Route::resource('category', CategoryController::class);
 
 Route::resource('barangmasuk', BarangMasukController::class)->middleware('auth');
 
